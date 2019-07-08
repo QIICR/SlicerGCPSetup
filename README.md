@@ -1,16 +1,6 @@
-Back to [Projects List](../../README.md#ProjectsList)
+These instructions are based on the notes from the [NA-MIC Project week 31 - GCP setup for Slicer project](https://github.com/NA-MIC/ProjectWeek/blob/master/PW31_2019_Boston/Projects/SlicerGCP/README.md). The original notes were copied here for more convenient maintenance and refinement.
 
 # Slicer in Google Cloud Platform (GCP) with GPU support
-
-## Key Investigators
-
-- Steve Pieper (Isomics)
-- Christian Herz (Children's Hospital of Philadelphia)
-
-# Project Description
-
-<!-- Add a short paragraph describing the project. -->
-Running Slicer on Google Cloud Platform with GPU support WITHOUT using dockerized images
 
 ## Objective
 
@@ -25,14 +15,7 @@ Replicate Slicer running GCP machine with instructions and write them down for t
 * Be careful with your login information.  If someone takes over your account they **could run up a huge bill that you will be responsible for paying**.
 
 
-## Approach and Plan
-
-<!-- Describe here HOW you would like to achieve the objectives stated above. -->
-
-1. Replicate installation process on machines
-2. Write detailed instructions
-
-## Progress and Next Steps
+## Instructions
 
 1. Sign up for 300$ free credit on GCP
 2. Go to https://console.cloud.google.com/home
@@ -44,14 +27,12 @@ Replicate Slicer running GCP machine with instructions and write them down for t
 8. Finish creation of VM
 9. (Optional) Create instance templates for repeated creation
 
-
 ### Configure Firewall
 
 1. Select left sidebar "VPC network --> Firewall rules"
 2. Select "CREATE FIREWALL RULE"
 3. Set Source ip ranges: 0.0.0.0/0
 4. Protocols and ports: tcp: 6080
-
 
 #### (Important) GPU usage prerequisites
 1. Go to sidebar —> IAM & admin —> Quotas
