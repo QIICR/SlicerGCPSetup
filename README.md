@@ -8,12 +8,12 @@ These instructions are based on the notes from the [NA-MIC Project week 31 - GCP
 
 Replicate Slicer running GCP machine with instructions and write them down for the public
 
-**Important notes:**
+## PLEASE READ: Important notes
 
-* The instructions don't account for security concerns so **don't put any data or passwords on the virtual machine** if you need to keep them secret.
 * The Google Cloud Platform costs real money once your free trial is over.  **Be sure to shut down anything you aren't using** or your credit card will eventually be charged.
 * Be careful with your login information.  If someone takes over your account they **could run up a huge bill that you will be responsible for paying**.
-
+* Depending on your specific situation, not all of the options or steps may be available or applicable (e.g., as a member of organization, your organization administrator may have disabled some of the options discussed).
+* Unless you are not concerned about billing, remember to **SHUT DOWN THE MACNINE** when you aren't using it! You are billed continuously while the VM instance is running.
 
 ## Instructions
 
@@ -22,19 +22,12 @@ Replicate Slicer running GCP machine with instructions and write them down for t
 3. Select left sidebar "Compute Engine --> VM instances"
 4. Create Instance with the configuration as you wish
 5. Machine type —> Customize and select GPU 
-6. Firewall --> allow HTTP and HTTPS
 7. Select “Ubuntu 18.04” boot disk
 8. Finish creation of VM
 9. (Optional) Create instance templates for repeated creation
 
-### Configure Firewall
+### Important: GPU usage prerequisites**
 
-1. Select left sidebar "VPC network --> Firewall rules"
-2. Select "CREATE FIREWALL RULE"
-3. Set Source ip ranges: 0.0.0.0/0
-4. Protocols and ports: tcp: 6080
-
-#### (Important) GPU usage prerequisites
 1. Go to sidebar —> IAM & admin —> Quotas
 2. Select metrics —> None and search for GPU
 3. Select GPUs (all regions)
@@ -43,12 +36,39 @@ Replicate Slicer running GCP machine with instructions and write them down for t
 6. Set limit to 2
 7. Request process might take up to 2 business days, but if you send them an email, they could be faster with it (at least for me it was)
 
-#### Configure machine via SSH
+You have two options to access VNC:
+* **Option 1**: by directly connecting to the noVNC port on the GCP VM instance - you will need to adjust your firewall settings. **Important**: this approach is not secure - it will allow anyone to connect to the VM!
+* **Option 2**: by tunneling the connection through an SSH channel - this approach is easier to implement, and will restrict access to the VM instance to authorized users only
 
-Start VM by clicking on SSH and execute the following
+### Option 1: Direct access to noVNC port on VM instance
 
-#### Installation of prerequisites
+Configure Firewall to open the noVNC port:
 
+1. Under VM instance configuration: Firewall --> allow HTTP and HTTPS
+1. Select left sidebar "VPC network --> Firewall rules"
+2. Select "CREATE FIREWALL RULE"
+3. Set Source ip ranges: 0.0.0.0/0
+4. Protocols and ports: tcp: 6080
+
+### Option 2: Access noVNC port via SSH tunnel
+
+Configure prerequisites on your machine:
+
+1. Install gcloud SDK as described [here](https://cloud.google.com/sdk/).
+2. Set up gcloud with your GCP credentials:
+```
+$ gcloud auth login <email account you use for your GCP work>
+$ gcloud config set project <your GCP project name>
+```
+
+### Configure the VM instance
+
+1. Start VM by clicking
+2. Get terminal access to the VM instance by either clicking on "SSH" button in the VM instances list, or executing the following command in the local terminal on your computer (considering you installed the GCP SDK, as discussed above):
+```
+$ gcloud compute ssh <VM instance name>
+```
+3. Install the prerequisites (after the `sudo xinit` command, interrupt it with Ctrl+C and proceed with the next steps)
 ```
 sudo apt-get update
 sudo apt install ubuntu-drivers-common
@@ -66,12 +86,12 @@ Execute the following and take not of the BusID
 nvidia-xconfig --query-gpu-info
 ```
 
-
+Open the X11 configuration file
 ```
 sudo vim /etc/X11/xorg.conf
 ```
 
-Insert the following lines including the BusID you retrieved earlier
+and insert the following lines including the BusID you retrieved earlier
 ```
 Section "Device"
    Identifier     "Device0"
@@ -81,26 +101,24 @@ Section "Device"
 EndSection
 ```
 
-
-### Start noVNC server
-
-Do this install once
+Prepare for running noVNC:
 ```
 sudo apt-get install python
 git clone https://github.com/novnc/noVNC
 ```
 
-Note that once you have done these configs the machine is set up and you can shut it down when you aren't using it.
+### Server-side: Start X11, VNC and noVNC
 
-
-Each reboot (e.g. after doing 'start' on the google cloud console).  The commands below are set up so you can cut and paste them into the ssh terminal from the google interface, but if you want to debug more easily them you might want to paste each in its own terminal. 
+Each reboot (e.g. after doing 'start' on the google cloud console). The commands below are set up so you can cut and paste them into the ssh terminal from the google interface, but if you want to debug more easily them you might want to paste each in its own terminal. 
 ```
 sudo xinit -- +extension GLX &
 ./noVNC/utils/launch.sh --vnc localhost:5900 &
 while true; do x11vnc -forever; sleep 1; done
 ```
 
-### Download and unpack Slicer for linux
+Note that the `while true ...` part in the instructions above is needed to address the possible intermittent crashes of x11vnc. You can improve stability by building `x11vnc` from source (see Troubleshooting section).
+
+### Server-side: Download and unpack Slicer for linux
 
 Here using a specific revision, but any version should work
 
@@ -108,7 +126,11 @@ Here using a specific revision, but any version should work
 wget http://slicer.kitware.com/midas3/download/item/435293/Slicer-4.10.2-linux-amd64.tar.gz
 tar xvzf Slicer-4.10.2-linux-amd64.tar.gz
 ```
-### Connect VNC
+### Client-side: Connect VNC
+
+Note: this is a very raw linux machine and you are running as root.  There is also a user account under your name that is automatically created by the google VM boot process.  Pretty much anything from the last few decades of linux development should run the same here as it does on a local workstation.
+
+#### Option 1: Direct access to noVNC port on VM instance
 
 1. Connect to http://{VM_External_IP}:6080/vnc.html
 
@@ -117,7 +139,14 @@ cd Slicer-4.10.2-linux-amd64
 ./Slicer
 ```
 
-Note: this is a very raw linux machine and you are running as root.  There is also a user account under your name that is automatically created by the google VM boot process.  Pretty much anything from the last few decades of linux development should run the same here as it does on a local workstation.
+
+### Option 2: Access noVNC port via SSH tunnel
+
+1. Tunnel noVNC port:
+```
+ gcloud compute ssh <your VM name> --project <your GCP project name> -- -L 6080:localhost:6080
+```
+2. Open the connection in your browser: http://localhost:6080/vnc.html
 
 # TODO
 If anyone works on these issues please write them up and let us know:
