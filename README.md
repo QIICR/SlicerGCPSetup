@@ -57,8 +57,7 @@ Configure prerequisites on your machine:
 1. Install gcloud SDK as described [here](https://cloud.google.com/sdk/).
 2. Set up gcloud with your GCP credentials:
 ```
-$ gcloud auth login <email account you use for your GCP work>
-$ gcloud config set project <your GCP project name>
+$ gcloud init
 ```
 
 ### Configure the VM instance
