@@ -113,7 +113,7 @@ Each reboot (e.g. after doing 'start' on the google cloud console). The commands
 ```
 sudo xinit -- +extension GLX &
 ./noVNC/utils/launch.sh --vnc localhost:5900 &
-while true; do x11vnc -forever; sleep 1; done
+while true; do x11vnc -forever -display :0; sleep 1; done
 ```
 
 Note that the `while true ...` part in the instructions above is needed to address the possible intermittent crashes of x11vnc. You can improve stability by building `x11vnc` from source (see Troubleshooting section).
@@ -162,6 +162,8 @@ If anyone works on these issues please write them up and let us know:
 
 ## Troubleshooting
 
+### Sporadic x11 server disconnects
+
 If you have trouble with the x11 server disconnecting when openning menus or resizing files, you are probably hitting [this bug](https://github.com/LibVNC/x11vnc/issues/61) which is not yet fixed in ubuntu.
 
 You can replace with a patched version like this (as root):
@@ -171,3 +173,22 @@ cp x11vnc /usr/bin/x11vnc
 ```
 
 * For key repeat: `sudo apt-get install x11-xserver-utils` and then `xset r rate 300 10` (you also need run `xset r on` twice to override the [-norepeat](http://www.karlrunge.com/x11vnc/x11vnc_opts.html) option of x11vnc)
+
+### Alternative VNC servers
+
+Some recipes, such as [this one](https://medium.com/google-cloud/linux-gui-on-the-google-cloud-platform-800719ab27c5), recommend using `vncserver`, which is a wrapper around `xvnc`. Based on [this post on NVIDIA forum](https://devtalk.nvidia.com/default/topic/1031651/nvidia-driver-vnc-and-glx-issue/), `xvnc` does not support GLX, and will not work with Slicer.
+
+If you experiment with alternative VNC implementations, please share your experience via PR!
+
+### Debugging
+
+If something is not working, you can debug individual components.
+
+On the server:
+1. Start `xinit` in the foreground mode and check if there are no errors.
+2. Start `x11vnc` in a separate terminal window, and check there are no errors.
+3. Check that `x11vnc` is listening on port 5900 after startup:
+`$ nc localhost 5900`
+
+On the client:
+1. If you can adjust the firewall settings, you can check if you can connect to `x11vnc` directly bypassing noVNC. If you are on mac, do NOT use the default macOS VNC client! We confirmed that [Chicken](https://sourceforge.net/projects/chicken/) open source VNC client can establish connection under the same conditions where default macOS client cannot.
