@@ -13,7 +13,7 @@ Replicate Slicer running GCP machine with instructions and write them down for t
 * The Google Cloud Platform costs real money once your free trial is over.  **Be sure to shut down anything you aren't using** or your credit card will eventually be charged.
 * Be careful with your login information.  If someone takes over your account they **could run up a huge bill that you will be responsible for paying**.
 * Depending on your specific situation, not all of the options or steps may be available or applicable (e.g., as a member of organization, your organization administrator may have disabled some of the options discussed).
-* Unless you are not concerned about billing, remember to **SHUT DOWN THE MACNINE** when you aren't using it! You are billed continuously while the VM instance is running.
+* Unless you are not concerned about billing, remember to **SHUT DOWN THE MACHINE** when you aren't using it! You are billed continuously while the VM instance is running.
 
 ## Instructions
 
