@@ -173,6 +173,25 @@ cp x11vnc /usr/bin/x11vnc
 
 * For key repeat: `sudo apt-get install x11-xserver-utils` and then `xset r rate 300 10` (you also need run `xset r on` twice to override the [-norepeat](http://www.karlrunge.com/x11vnc/x11vnc_opts.html) option of x11vnc)
 
+You can also build `x11vnc` from source using the instructions below.
+
+1. Install prerequisites (as discussed [here](https://askubuntu.com/questions/496549/error-you-must-put-some-source-uris-in-your-sources-list)):
+```
+sudo cp /etc/apt/sources.list /etc/apt/sources.list~
+sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
+sudo apt-get update
+```
+2. Install `x11vnc` build dependencies, checkout source, configure and build (as in the [`x11vnc` build instructions](https://github.com/LibVNC/x11vnc#building-x11vnc)).
+```
+sudo apt-get build-dep x11vnc
+git clone https://github.com/LibVNC/x11vnc.git
+cd x11vnc
+autoreconf -fiv
+make
+```
+
+The binary will be in the `src` directory!
+
 ### Alternative VNC servers
 
 Some recipes, such as [this one](https://medium.com/google-cloud/linux-gui-on-the-google-cloud-platform-800719ab27c5), recommend using `vncserver`, which is a wrapper around `xvnc`. Based on [this post on NVIDIA forum](https://devtalk.nvidia.com/default/topic/1031651/nvidia-driver-vnc-and-glx-issue/), `xvnc` does not support GLX, and will not work with Slicer.
