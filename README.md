@@ -216,3 +216,22 @@ On the server:
 
 On the client:
 1. If you can adjust the firewall settings, you can check if you can connect to `x11vnc` directly bypassing noVNC. If you are on mac, do NOT use the default macOS VNC client! We confirmed that [Chicken](https://sourceforge.net/projects/chicken/) open source VNC client can establish connection under the same conditions where default macOS client cannot.
+
+### Swap space
+By default there is no swap space allocated on the machines.  You can add this using [standard linux commands](https://linuxize.com/post/create-a-linux-swap-file/) such as these:
+```
+sudo fallocate -l 90G /swapfile
+sudo chmod 600 /swapfile 
+sudo mkswap /swapfile
+sudo swapon /swapfile
+```
+To make this persist across boots, add this to the /etc/fstab
+```
+/swapfile swap swap defaults 0 0
+```
+
+Check your swap status with these commands
+```
+sudo swapon --show
+sudo free -h
+```
