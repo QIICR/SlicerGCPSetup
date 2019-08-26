@@ -103,6 +103,8 @@ Section "Device"
 EndSection
 ```
 
+or if /etc/X11/xorg.conf does not exist, create a file in `/usr/share/X11/xorg.conf.d/xorg.conf` with the contents listed above.
+
 
 ### Server-side: Start X11, VNC and noVNC
 
