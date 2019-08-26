@@ -70,15 +70,16 @@ $ gcloud compute ssh <VM instance name>
 ```
 3. Install the prerequisites (after the `sudo xinit` command, interrupt it with Ctrl+C and proceed with the next steps)
 ```
-sudo apt-get -y update
-sudo apt install -y ubuntu-drivers-common
-sudo ubuntu-drivers autoinstall
-sudo apt install -y xinit
-sudo xinit
-sudo apt-get install -y x11vnc
-sudo apt-get install -y xterm
-sudo apt-get install -y libpulse-dev libnss3 libglu-mesa
-sudo nvidia-xconfig
+sudo apt-get -y update && \
+  sudo apt install -y ubuntu-drivers-common && \
+  sudo ubuntu-drivers autoinstall && \
+  sudo apt install -y xinit && \
+  sudo apt-get install -y x11vnc && \
+  sudo apt-get install -y xterm && \
+  sudo apt-get install -y libpulse-dev libnss3 libglu-mesa && \
+  sudo nvidia-xconfig && \
+  sudo apt-get install -y python && \
+  git clone https://github.com/novnc/noVNC
 ```
 
 Execute the following and take note of the BusID
@@ -102,11 +103,6 @@ Section "Device"
 EndSection
 ```
 
-Prepare for running noVNC:
-```
-sudo apt-get install -y python
-git clone https://github.com/novnc/noVNC
-```
 
 ### Server-side: Start X11, VNC and noVNC
 
