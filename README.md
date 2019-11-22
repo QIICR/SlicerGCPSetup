@@ -76,7 +76,7 @@ sudo apt-get -y update && \
   sudo apt install -y xinit && \
   sudo apt-get install -y x11vnc && \
   sudo apt-get install -y xterm && \
-  sudo apt-get install -y libpulse-dev libnss3 libglu-mesa && \
+  sudo apt-get install -y libpulse-dev libnss3 libglu1-mesa && \
   sudo nvidia-xconfig && \
   sudo apt-get install -y python && \
   git clone https://github.com/novnc/noVNC
