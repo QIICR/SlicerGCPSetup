@@ -146,7 +146,7 @@ cd Slicer-4.10.2-linux-amd64
 
 1. Tunnel noVNC port:
 ```
- gcloud compute ssh <your VM name> --project <your GCP project name> -- -L 6080:localhost:6080
+ gcloud compute ssh <your VM name> --project <your GCP project name> --zone <your VM zone> -- -L 6080:localhost:6080
 ```
 2. Open the connection in your browser: http://localhost:6080/vnc.html
 
