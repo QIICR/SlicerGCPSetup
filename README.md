@@ -24,8 +24,9 @@ Replicate Slicer running GCP machine with instructions and write them down for t
 4. Create Instance with the configuration as you wish
 5. Machine type —> Customize and select GPU 
 7. Select “Ubuntu 18.04” boot disk
-8. Finish creation of VM
-9. (Optional) Create instance templates for repeated creation
+8. Increase the size of the boot disk from the default 10Gb to a larger number (consider 100Gb).
+9. Finish creation of VM
+10. (Optional) Create instance templates for repeated creation
 
 ### Important: GPU usage prerequisites**
 
