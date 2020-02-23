@@ -142,6 +142,9 @@ cd Slicer-4.10.2-linux-amd64
 
 ```
 
+It is better to start Slicer as a non-root, since otherwise it will not be possible to install extensions. You can do this with 
+
+`$ su <user name> && ./Slicer`
 
 ### Option 2: Access noVNC port via SSH tunnel
 
