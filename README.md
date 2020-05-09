@@ -106,6 +106,21 @@ EndSection
 
 or if /etc/X11/xorg.conf does not exist, create a file in `/usr/share/X11/xorg.conf.d/xorg.conf` with the contents listed above.
 
+To set the size of the virtal display you can edit the Screen section as shown below.
+```
+Section "Screen"
+    Identifier     "Screen0"
+    Device         "Device0"
+    DefaultDepth    24
+    Option         "UseDisplayDevice" "none"
+    SubSection     "Display"
+        Virtual     1920 1080
+        Depth       24
+    EndSubSection
+EndSection
+```
+
+
 
 ### Server-side: Start X11, VNC and noVNC
 
