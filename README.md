@@ -120,6 +120,7 @@ Section "Screen"
 EndSection
 ```
 
+Note: if the Slicer font and icons size is too small, run `xrandr` to find the max resultion and use that as the Virtual setting.  Then use `xrandr` or install `axrandr` to resize the desktop to a comfortable size.
 
 
 ### Server-side: Start X11, VNC and noVNC
