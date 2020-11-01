@@ -23,7 +23,7 @@ Replicate Slicer running GCP machine with instructions and write them down for t
 3. Select left sidebar "Compute Engine --> VM instances"
 4. Create Instance with the configuration as you wish
 5. Machine type —> Customize and select GPU 
-7. Select “Ubuntu 18.04” boot disk
+7. Select “Ubuntu 18.04” or "Ubuntu 20.04" boot disk
 8. Increase the size of the boot disk from the default 10Gb to a larger number (consider 100Gb).
 9. Finish creation of VM
 10. (Optional) Create instance templates for repeated creation
@@ -42,7 +42,7 @@ You have two options to access VNC:
 * **Option 1**: by directly connecting to the noVNC port on the GCP VM instance - you will need to adjust your firewall settings. **Important**: this approach is not secure - it will allow anyone to connect to the VM!
 * **Option 2**: by tunneling the connection through an SSH channel - this approach is easier to implement, and will restrict access to the VM instance to authorized users only
 
-### Option 1: Direct access to noVNC port on VM instance
+### Option 1: Direct access to noVNC port on VM instance (not secure!)
 
 Configure Firewall to open the noVNC port:
 
@@ -69,7 +69,7 @@ $ gcloud init
 ```
 $ gcloud compute ssh <VM instance name>
 ```
-3. Install the prerequisites (after the `sudo xinit` command, interrupt it with Ctrl+C and proceed with the next steps)
+3. Install the prerequisites (takes a few minutes)
 ```
 sudo apt-get -y update && \
   sudo apt install -y ubuntu-drivers-common && \
